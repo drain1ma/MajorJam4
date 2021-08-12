@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (horizontal < 0)
             sr.flipX = true;
-        else
+        else if (horizontal > 0)
             sr.flipX = false;
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);

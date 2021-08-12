@@ -4,9 +4,20 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed; 
+    public float speed;
+    public float jumpForce;
+    public Transform groundCheck;
+    public Transform frontCheck;
+    public float checkRadius;
+    public float wallSlidingSpeed; 
     private Rigidbody2D rb;
-    private SpriteRenderer sr; 
+    private SpriteRenderer sr;
+
+    [SerializeField]
+    private LayerMask whatIsGround; 
+    private bool isGrounded;
+    private bool isTouchingFront;
+    private bool wallSliding; 
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +36,27 @@ public class PlayerMovement : MonoBehaviour
         if (horizontal < 0)
             sr.flipX = true;
         else
-            sr.flipX = false; 
+            sr.flipX = false;
 
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
+        isTouchingFront = Physics2D.OverlapCircle(frontCheck.position, checkRadius, whatIsGround); 
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            rb.velocity = Vector2.up * jumpForce; 
+
+        if (isTouchingFront && !isGrounded && horizontal != 0)
+        {
+            wallSliding = true; 
+        }
+        else
+        {
+            wallSliding = false; 
+        }
+
+        if (wallSliding)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue)); 
+        }
 
     }
 }

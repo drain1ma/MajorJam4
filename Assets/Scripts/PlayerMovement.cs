@@ -17,7 +17,12 @@ public class PlayerMovement : MonoBehaviour
     private LayerMask whatIsGround; 
     private bool isGrounded;
     private bool isTouchingFront;
-    private bool wallSliding; 
+    private bool wallSliding;
+    private bool wallJumping;
+    public float xWallForce;
+    public float yWallForce;
+    public float wallJumpTime; 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,5 +63,22 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue)); 
         }
 
+        if (Input.GetButtonDown("Jump") && wallSliding == true)
+        {
+            wallJumping = true;
+            Invoke("SetWallJumpingToFalse", wallJumpTime); 
+        }
+
+        if (wallJumping)
+        {
+            rb.velocity = new Vector2(xWallForce * -horizontal, yWallForce); 
+        }
+
+
+    }
+
+    void SetWallJumpingToFalse()
+    {
+        wallJumping = false; 
     }
 }

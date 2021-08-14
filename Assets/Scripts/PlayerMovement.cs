@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
     public float yWallForce;
     public float wallJumpTime; 
 
+   
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
             sr.flipX = true;
         else if (horizontal > 0)
             sr.flipX = false;
+
+
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
         isTouchingFront = Physics2D.OverlapCircle(frontCheck.position, checkRadius, whatIsGround); 

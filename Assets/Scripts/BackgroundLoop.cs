@@ -8,6 +8,7 @@ public class BackgroundLoop : MonoBehaviour
     private Camera mainCamera;
     private Vector2 screenBounds;
     public float choke;
+    public float scrollSpeed;
 
     void Start()
     {
@@ -41,17 +42,26 @@ public class BackgroundLoop : MonoBehaviour
             GameObject firstChild = children[1].gameObject;
             GameObject lastChild = children[children.Length - 1].gameObject;
             float halfObjectWidth = lastChild.GetComponent<SpriteRenderer>().bounds.extents.x - choke;
-            if (transform.position.x + screenBounds.x > lastChild.transform.position.x)
+            if (transform.position.x + screenBounds.x > lastChild.transform.position.x + halfObjectWidth)
             {
                 firstChild.transform.SetAsLastSibling();
-                firstChild.transform.position = new Vector3(lastChild.transform.position.x * 2, lastChild.transform.position.y, lastChild.transform.position.z);
+                firstChild.transform.position = new Vector3(lastChild.transform.position.x + halfObjectWidth * 2, lastChild.transform.position.y, lastChild.transform.position.z);
             }
-            else if (transform.position.x - screenBounds.x < firstChild.transform.position.x)
+            else if (transform.position.x - screenBounds.x < firstChild.transform.position.x - halfObjectWidth)
             {
                 lastChild.transform.SetAsFirstSibling();
-                lastChild.transform.position = new Vector3(firstChild.transform.position.x * 2, firstChild.transform.position.y, firstChild.transform.position.z);
+                lastChild.transform.position = new Vector3(firstChild.transform.position.x - halfObjectWidth * 2, firstChild.transform.position.y, firstChild.transform.position.z);
             }
         }
+    }
+    void Update()
+    {
+
+        Vector3 velocity = Vector3.zero;
+        Vector3 desiredPosition = transform.position + new Vector3(scrollSpeed, 0, 0);
+        Vector3 smoothPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, 0.3f);
+        transform.position = smoothPosition;
+
     }
     void LateUpdate()
     {

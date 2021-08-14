@@ -7,8 +7,12 @@ public class SlugScript : MonoBehaviour
     public float speed;
 
     private float min;
-    private float max; 
-
+    private float max;
+    public Transform topCheck;
+    public float checkRadius;
+    [SerializeField]
+    private LayerMask whatIsPlayer;
+    private bool isTouchingTop; 
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +23,13 @@ public class SlugScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(Mathf.PingPong(Time.time * 2, max - min) + min, transform.position.y, transform.position.z); 
+        transform.position = new Vector3(Mathf.PingPong(Time.time * 2, max - min) + min, transform.position.y, transform.position.z);
+
+
+        isTouchingTop = Physics2D.OverlapCircle(topCheck.position, checkRadius, whatIsPlayer);
+
+        if (isTouchingTop)
+            Destroy(gameObject); 
+
     }
 }

@@ -50,7 +50,6 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
         isTouchingFront = Physics2D.OverlapCircle(frontCheck.position, checkRadius, whatIsGround);
 
-        Debug.Log(isTouchingFront); 
         if (Input.GetButtonDown("Jump") && isGrounded)
             rb.velocity = Vector2.up * jumpForce; 
 

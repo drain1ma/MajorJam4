@@ -43,7 +43,7 @@ public class HealthScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Slug")
+        if (collision.gameObject.CompareTag("Slug"))
         {
             health--;
             rb.AddForce(new Vector3(-hitForce, rb.velocity.y));
@@ -52,7 +52,7 @@ public class HealthScript : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Heart")
+        if (collision.gameObject.CompareTag("Heart"))
         {
             health++;
             Destroy(collision.gameObject); 

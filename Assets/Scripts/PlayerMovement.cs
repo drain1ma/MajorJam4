@@ -140,10 +140,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Fire3") && canOpenDoor)
         {
-            if (doors[1].transform.position.x - transform.position.x > doors[0].transform.position.x - transform.position.x)
-                transform.position = doors[1].transform.position; 
-            else if (doors[0].transform.position.x - transform.position.x > doors[1].transform.position.x - transform.position.x)
-                transform.position = doors[0].transform.position;
+            GameObject closestDoor = GetClosestDoor(doors);
+
+            if (closestDoor.Equals(doors[0]) && canOpenDoor)
+                transform.position = doors[1].transform.position;
+            else if (closestDoor.Equals(doors[1]) && canOpenDoor)
+                transform.position = doors[0].transform.position; 
         }
     }
 
@@ -152,7 +154,22 @@ public class PlayerMovement : MonoBehaviour
         wallJumping = false; 
     }
 
-
+    GameObject GetClosestDoor(GameObject[] doors)
+    {
+        GameObject tMin = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = transform.position;
+        foreach (GameObject d in doors)
+        {
+            float dist = Vector3.Distance(d.transform.position, currentPos);
+            if (dist < minDist)
+            {
+                tMin = d;
+                minDist = dist;
+            }
+        }
+        return tMin;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -168,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Door"))
         {
             openDoor.SetActive(true);
-            canOpenDoor = true; 
+            canOpenDoor = true;
         }
     }
 
@@ -177,7 +194,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Door"))
         {
             openDoor.SetActive(false);
-            canOpenDoor = false; 
+            canOpenDoor = false;
         }
     }
 }

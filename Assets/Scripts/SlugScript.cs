@@ -12,6 +12,11 @@ public class SlugScript : MonoBehaviour
     public float checkRadius;
     [SerializeField]
     private LayerMask whatIsPlayer;
+    [SerializeField]
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip[] audioClips; 
     private bool isTouchingTop; 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +34,12 @@ public class SlugScript : MonoBehaviour
         isTouchingTop = Physics2D.OverlapCircle(topCheck.position, checkRadius, whatIsPlayer);
 
         if (isTouchingTop)
-            Destroy(gameObject); 
+        {
+            audioSource.clip = audioClips[0];
+            audioSource.Play();
+            Destroy(gameObject);
+        }
+           
 
     }
 }

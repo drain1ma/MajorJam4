@@ -67,7 +67,10 @@ public class PlayerMovement : MonoBehaviour
         isTouchingFront = Physics2D.OverlapCircle(frontCheck[0].position, checkRadius, whatIsGround);
         isTouchingFront2 = Physics2D.OverlapCircle(frontCheck[1].position, checkRadius, whatIsGround);
         if (Input.GetButtonDown("Jump") && isGrounded)
-            rb.velocity = Vector2.up * jumpForce; 
+        {
+            rb.velocity = Vector2.up * jumpForce;
+        }
+            
 
         if (isTouchingFront && !isGrounded && horizontal != 0)
         {
@@ -114,7 +117,19 @@ public class PlayerMovement : MonoBehaviour
             black.SetActive(false); 
         }
 
+        if (Input.GetButton("Fire2") && !isGrounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        }
 
+        if (Input.GetButtonDown("Fire1"))
+        {
+            GameObject[] slugs = GameObject.FindGameObjectsWithTag("Slug"); 
+            foreach (GameObject slug in slugs)
+            {
+                Destroy(slug); 
+            }
+        }
     }
 
     void SetWallJumpingToFalse()

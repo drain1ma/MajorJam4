@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,14 +13,26 @@ public class PlayerMovement : MonoBehaviour
     public float wallSlidingSpeed; 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+    [SerializeField]
+    private GameObject desertUI;
+    [SerializeField]
+    private Text numOfDeserts;
+    private int desertTotal; 
+    [SerializeField]
+    private LayerMask whatIsGround;
+    [SerializeField]
+    private AudioSource audioSource;
 
     [SerializeField]
-    private LayerMask whatIsGround; 
+    private AudioClip[] audioClips;
+    [SerializeField]
+    private GameObject black; 
     private bool isGrounded;
     private bool isTouchingFront;
     private bool isTouchingFront2;
     private bool wallSliding;
     private bool wallJumping;
+    private bool showingUI; 
     public float xWallForce;
     public float yWallForce;
     public float wallJumpTime; 
@@ -30,7 +43,9 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>(); 
+        sr = GetComponent<SpriteRenderer>();
+        showingUI = true;
+        desertTotal = 0; 
     }
 
     // Update is called once per frame
@@ -84,6 +99,22 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
+        if (Input.GetButtonDown("Cancel") && showingUI)
+        {
+            Time.timeScale = 0; 
+            desertUI.SetActive(true);
+            showingUI = false;
+            black.SetActive(true);
+        }
+        else if (Input.GetButtonDown("Cancel") && !showingUI)
+        {
+            Time.timeScale = 1; 
+            desertUI.SetActive(false);
+            showingUI = true;
+            black.SetActive(false); 
+        }
+
+
     }
 
     void SetWallJumpingToFalse()
@@ -97,6 +128,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Desert"))
         {
+            desertTotal++;
+            numOfDeserts.text = desertTotal.ToString();
+            audioSource.clip = audioClips[0];
+            audioSource.Play(); 
             Destroy(collision.gameObject); 
         }
     }

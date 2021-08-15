@@ -7,6 +7,7 @@ TagManager:
   - Slug
   - Heart
   - Desert
+  - Door
   layers:
   - Default
   - TransparentFX

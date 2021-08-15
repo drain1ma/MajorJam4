@@ -26,13 +26,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private AudioClip[] audioClips;
     [SerializeField]
-    private GameObject black; 
+    private GameObject black;
+
+    [SerializeField]
+    private GameObject[] doors;
+
+    [SerializeField]
+    private GameObject openDoor; 
     private bool isGrounded;
     private bool isTouchingFront;
     private bool isTouchingFront2;
     private bool wallSliding;
     private bool wallJumping;
-    private bool showingUI; 
+    private bool showingUI;
+    private bool canOpenDoor; 
     public float xWallForce;
     public float yWallForce;
     public float wallJumpTime; 
@@ -130,6 +137,14 @@ public class PlayerMovement : MonoBehaviour
                 Destroy(slug); 
             }
         }
+
+        if (Input.GetButtonDown("Fire3") && canOpenDoor)
+        {
+            if (doors[1].transform.position.x - transform.position.x > doors[0].transform.position.x - transform.position.x)
+                transform.position = doors[1].transform.position; 
+            else if (doors[0].transform.position.x - transform.position.x > doors[1].transform.position.x - transform.position.x)
+                transform.position = doors[0].transform.position;
+        }
     }
 
     void SetWallJumpingToFalse()
@@ -148,6 +163,21 @@ public class PlayerMovement : MonoBehaviour
             audioSource.clip = audioClips[0];
             audioSource.Play(); 
             Destroy(collision.gameObject); 
+        }
+
+        if (collision.gameObject.CompareTag("Door"))
+        {
+            openDoor.SetActive(true);
+            canOpenDoor = true; 
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Door"))
+        {
+            openDoor.SetActive(false);
+            canOpenDoor = false; 
         }
     }
 }

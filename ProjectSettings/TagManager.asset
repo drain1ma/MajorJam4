@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Slug
+  - Heart
+  - Desert
   layers:
   - Default
   - TransparentFX

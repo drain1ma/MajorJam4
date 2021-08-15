@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed;
     public float jumpForce;
     public Transform groundCheck;
-    public Transform frontCheck;
+    public Transform[] frontCheck;
     public float checkRadius;
     public float wallSlidingSpeed; 
     private Rigidbody2D rb;
@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private LayerMask whatIsGround; 
     private bool isGrounded;
     private bool isTouchingFront;
+    private bool isTouchingFront2;
     private bool wallSliding;
     private bool wallJumping;
     public float xWallForce;
@@ -48,12 +49,16 @@ public class PlayerMovement : MonoBehaviour
 
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
-        isTouchingFront = Physics2D.OverlapCircle(frontCheck.position, checkRadius, whatIsGround);
-
+        isTouchingFront = Physics2D.OverlapCircle(frontCheck[0].position, checkRadius, whatIsGround);
+        isTouchingFront2 = Physics2D.OverlapCircle(frontCheck[1].position, checkRadius, whatIsGround);
         if (Input.GetButtonDown("Jump") && isGrounded)
             rb.velocity = Vector2.up * jumpForce; 
 
         if (isTouchingFront && !isGrounded && horizontal != 0)
+        {
+            wallSliding = true; 
+        }
+        else if (isTouchingFront2 && !isGrounded && horizontal != 0)
         {
             wallSliding = true; 
         }

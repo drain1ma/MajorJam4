@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
@@ -58,6 +59,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (transform.position.y < -80)
+        {
+            SceneManager.LoadScene("Level1"); 
+        }
         float horizontal = Input.GetAxis("Horizontal");
 
 
@@ -131,7 +137,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            GameObject[] slugs = GameObject.FindGameObjectsWithTag("Slug"); 
+            GameObject[] slugs = GameObject.FindGameObjectsWithTag("Slug");
+            audioSource.clip = audioClips[1];
+            audioSource.Play();
             foreach (GameObject slug in slugs)
             {
                 Destroy(slug); 
